@@ -1,0 +1,8 @@
+<.header>
+  Edit Feed <%= @feed.id %>
+  <:subtitle>Use this form to manage feed records in your database.</:subtitle>
+</.header>
+
+<.feed_form changeset={@changeset} action={~p"/feeds/#{@feed}"} />
+
+<.back navigate={~p"/feeds"}>Back to feeds</.back>

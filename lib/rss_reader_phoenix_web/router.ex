@@ -18,6 +18,8 @@ defmodule RssReaderPhoenixWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/feeds", FeedController
+    post "/feeds/:id/refresh", FeedController, :refresh
   end
 
   # Other scopes may use custom stacks.

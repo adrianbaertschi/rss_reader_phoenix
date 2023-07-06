@@ -1,0 +1,29 @@
+<.header>
+  Listing Feeds
+  <:actions>
+    <.link href={~p"/feeds/new"}>
+      <.button>New Feed</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="feeds" rows={@feeds} row_click={&JS.navigate(~p"/feeds/#{&1}")}>
+  <:col :let={feed} label="Title"><%= feed.title %></:col>
+  <:col :let={feed} label="Url"><%= feed.url %></:col>
+  <:action :let={feed}>
+    <div class="sr-only">
+      <.link navigate={~p"/feeds/#{feed}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/feeds/#{feed}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={feed}>
+    <.link href={~p"/feeds/#{feed}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+  <:action :let={feed}>
+      <.link href={~p"/feeds/#{feed}/refresh"} method="post">
+        Refresh
+      </.link>
+    </:action>
+</.table>

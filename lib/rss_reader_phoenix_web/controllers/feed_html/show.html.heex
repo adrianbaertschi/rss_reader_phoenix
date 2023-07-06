@@ -1,0 +1,16 @@
+<.header>
+  Feed <%= @feed.id %>
+  <:subtitle>This is a feed record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/feeds/#{@feed}/edit"}>
+      <.button>Edit feed</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title"><%= @feed.title %></:item>
+  <:item title="Url"><%= @feed.url %></:item>
+</.list>
+
+<.back navigate={~p"/feeds"}>Back to feeds</.back>
