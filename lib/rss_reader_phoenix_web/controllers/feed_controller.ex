@@ -62,6 +62,7 @@ defmodule RssReaderPhoenixWeb.FeedController do
 
   def refresh(conn, %{"id" => id}) do
     feed = Feeds.get_feed!(id)
+    Feeds.add_entry_to_feed(feed)
 
     conn
     |> put_flash(:info, "Refresh done")

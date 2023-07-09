@@ -6,6 +6,8 @@ defmodule RssReaderPhoenix.Feeds.Feed do
     field :title, :string
     field :url, :string
 
+    has_many :entries, RssReaderPhoenix.Feeds.Entry
+
     timestamps()
   end
 

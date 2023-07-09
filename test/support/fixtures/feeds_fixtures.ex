@@ -18,4 +18,20 @@ defmodule RssReaderPhoenix.FeedsFixtures do
 
     feed
   end
+
+  @doc """
+  Generate a entry.
+  """
+  def entry_fixture(attrs \\ %{}) do
+    {:ok, entry} =
+      attrs
+      |> Enum.into(%{
+        title: "some title",
+        url: "some url",
+        content: "some content"
+      })
+      |> RssReaderPhoenix.Feeds.create_entry()
+
+    entry
+  end
 end
