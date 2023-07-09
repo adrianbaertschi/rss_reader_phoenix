@@ -14,9 +14,10 @@
 </.list>
 
 <%= for entry <- @feed.entries do %>
-  <p><%= entry.title %></p>
+  <h2 class="text-xl"><%= entry.title %></h2>
   <p><%= entry.url %></p>
   <p><%= entry.content %></p>
+  <br>
 <% end %>
 
 <.back navigate={~p"/feeds"}>Back to feeds</.back>

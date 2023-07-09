@@ -3,7 +3,7 @@ defmodule RssReaderPhoenix.Repo.Migrations.EntryToFeed do
 
   def change do
     alter table(:entries) do
-      add :feed_id, references(:feeds)
+      add :feed_id, references(:feeds, on_delete: :delete_all)
     end
   end
 end

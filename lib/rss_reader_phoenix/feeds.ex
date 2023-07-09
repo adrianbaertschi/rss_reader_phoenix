@@ -51,9 +51,29 @@ defmodule RssReaderPhoenix.Feeds do
 
   """
   def create_feed(attrs \\ %{}) do
+    {:ok, response} = HTTPoison.get(attrs["url"] |> String.trim())
+    {:ok, parsedFeed, _} = FeederEx.parse(response.body)
+
+    entries =
+      parsedFeed.entries
+      |> Enum.map(fn e ->
+        %{
+          title: e.title || "no title",
+          url: e.link || "no link",
+          content: e.summary || "no content"
+        }
+      end)
+
+    attrs = Map.put(attrs, "entries", entries)
+    attrs = Map.put(attrs, "title", parsedFeed.title)
+
     %Feed{}
     |> Feed.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:entries)
     |> Repo.insert()
+  end
+
+  defp load_rss_content(_params) do
   end
 
   @doc """
@@ -109,8 +129,6 @@ defmodule RssReaderPhoenix.Feeds do
     |> Ecto.Changeset.put_assoc(:feed, feed)
     |> Repo.insert()
   end
-
-  alias RssReaderPhoenix.Feeds.Entry
 
   @doc """
   Returns the list of entries.
