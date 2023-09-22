@@ -115,5 +115,18 @@ defmodule RssReaderPhoenix.FeedsTest do
       entry = entry_fixture()
       assert %Ecto.Changeset{} = Feeds.change_entry(entry)
     end
+
+    test "date parsing" do
+      # https://www.rssboard.org/files/sample-rss-2.xml
+      a = "Tue, 10 Jun 2003 04:00:00 GMT"
+      b = "Fri, 21 Jul 2023 09:04 EDT"
+
+      assert parse(a) === ~U[2003-06-10 04:00:00Z]
+      assert parse(b) === ~U[2023-07-21 09:04:00Z]
+    end
+
+    defp parse(input) do
+      Feeds.parseDate(input)
+    end
   end
 end

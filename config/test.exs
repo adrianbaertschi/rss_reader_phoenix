@@ -7,7 +7,7 @@ import Config
 # Run `mix help test` for more information.
 config :rss_reader_phoenix, RssReaderPhoenix.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "mysecretpassword",
   hostname: "localhost",
   database: "rss_reader_phoenix_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,

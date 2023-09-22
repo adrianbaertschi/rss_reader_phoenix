@@ -6,7 +6,7 @@ defmodule RssReaderPhoenix.Feeds.Entry do
     field :title, :string
     field :url, :string
     field :content, :string
-#    field :feed_id, :id
+    field :publish_date, :utc_datetime
 
     belongs_to :feed, RssReaderPhoenix.Feeds.Feed
 
@@ -16,7 +16,7 @@ defmodule RssReaderPhoenix.Feeds.Entry do
   @doc false
   def changeset(entry, attrs) do
     entry
-    |> cast(attrs, [:title, :url, :content])
+    |> cast(attrs, [:title, :url, :content, :publish_date])
     |> validate_required([:title, :url, :content])
   end
 end

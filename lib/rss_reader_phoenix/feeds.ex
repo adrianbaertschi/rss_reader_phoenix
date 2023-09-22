@@ -60,7 +60,8 @@ defmodule RssReaderPhoenix.Feeds do
         %{
           title: e.title || "no title",
           url: e.link || "no link",
-          content: e.summary || "no content"
+          content: e.summary || "no content",
+          publish_date: parseDate(e.updated)
         }
       end)
 
@@ -73,7 +74,15 @@ defmodule RssReaderPhoenix.Feeds do
     |> Repo.insert()
   end
 
-  defp load_rss_content(_params) do
+  def parseDate(input) do
+    case Timex.parse(input, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}:{s} {Zabbr}") do
+      {:ok, result} ->
+        result
+
+      {:error, _} ->
+        naive = Timex.parse!(String.slice(input, 0..-5), "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}")
+        DateTime.from_naive!(naive, "Etc/UTC")
+    end
   end
 
   @doc """
