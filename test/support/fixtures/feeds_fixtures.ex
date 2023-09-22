@@ -8,14 +8,7 @@ defmodule RssReaderPhoenix.FeedsFixtures do
   Generate a feed.
   """
   def feed_fixture(attrs \\ %{}) do
-    {:ok, feed} =
-      attrs
-      |> Enum.into(%{
-        title: "some title",
-        url: "some url"
-      })
-      |> RssReaderPhoenix.Feeds.create_feed()
-
+    {:ok, feed} = RssReaderPhoenix.Feeds.create_feed("http://mock.local/feed.xml")
     feed
   end
 

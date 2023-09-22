@@ -31,3 +31,5 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :rss_reader_phoenix, Feeds, http_client: MockHttpClient

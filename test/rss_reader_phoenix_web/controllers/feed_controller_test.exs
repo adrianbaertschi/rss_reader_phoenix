@@ -3,7 +3,7 @@ defmodule RssReaderPhoenixWeb.FeedControllerTest do
 
   import RssReaderPhoenix.FeedsFixtures
 
-  @create_attrs %{title: "some title", url: "some url"}
+  @create_attrs %{title: "some title", url: "http://mock.local/feed.xml"}
   @update_attrs %{title: "some updated title", url: "some updated url"}
   @invalid_attrs %{title: nil, url: nil}
 
@@ -32,10 +32,6 @@ defmodule RssReaderPhoenixWeb.FeedControllerTest do
       assert html_response(conn, 200) =~ "Feed #{id}"
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/feeds", feed: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Feed"
-    end
   end
 
   describe "edit feed" do

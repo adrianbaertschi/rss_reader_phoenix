@@ -11,8 +11,13 @@ defmodule RssReaderPhoenix.FeedsTest do
     @invalid_attrs %{title: nil, url: nil}
 
     test "list_feeds/0 returns all feeds" do
-      feed = feed_fixture()
-      assert Feeds.list_feeds() == [feed]
+      expected = feed_fixture()
+      actual = Feeds.list_feeds() |> hd
+      assert actual.id == expected.id
+      assert actual.inserted_at == expected.inserted_at
+      assert actual.title == expected.title
+      assert actual.updated_at == expected.updated_at
+      assert actual.url == expected.url
     end
 
     test "get_feed!/1 returns the feed with given id" do
@@ -21,15 +26,13 @@ defmodule RssReaderPhoenix.FeedsTest do
     end
 
     test "create_feed/1 with valid data creates a feed" do
-      valid_attrs = %{title: "some title", url: "some url"}
-
-      assert {:ok, %Feed{} = feed} = Feeds.create_feed(valid_attrs)
-      assert feed.title == "some title"
-      assert feed.url == "some url"
+      assert {:ok, %Feed{} = feed} = Feeds.create_feed("http://mock.local/feed.xml")
+      assert feed.title == "NASA Space Station News"
+      assert feed.url == "http://mock.local/feed.xml"
     end
 
     test "create_feed/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Feeds.create_feed(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Feeds.create_feed(nil)
     end
 
     test "update_feed/2 with valid data updates the feed" do

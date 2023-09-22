@@ -15,7 +15,7 @@ defmodule RssReaderPhoenixWeb.FeedController do
   end
 
   def create(conn, %{"feed" => feed_params}) do
-    case Feeds.create_feed(feed_params) do
+    case Feeds.create_feed(feed_params["url"]) do
       {:ok, feed} ->
         conn
         |> put_flash(:info, "Feed created successfully.")

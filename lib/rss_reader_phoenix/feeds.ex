@@ -3,6 +3,8 @@ defmodule RssReaderPhoenix.Feeds do
   The Feeds context.
   """
 
+  @http_client Application.compile_env(:rss_reader_phoenix, Feeds, []) |> Keyword.get(:http_client, HTTPoison)
+
   import Ecto.Query, warn: false
   alias RssReaderPhoenix.Repo
 
@@ -38,6 +40,11 @@ defmodule RssReaderPhoenix.Feeds do
   """
   def get_feed!(id), do: Repo.get!(Feed, id) |> Repo.preload(:entries)
 
+
+  def create_feed(nil) do
+    {:error, %Ecto.Changeset{}}
+  end
+
   @doc """
   Creates a feed.
 
@@ -50,8 +57,8 @@ defmodule RssReaderPhoenix.Feeds do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_feed(attrs \\ %{}) do
-    {:ok, response} = HTTPoison.get(attrs["url"] |> String.trim())
+  def create_feed(url) do
+    {:ok, response} = @http_client.get(url)
     {:ok, parsedFeed, _} = FeederEx.parse(response.body)
 
     entries =
@@ -65,8 +72,9 @@ defmodule RssReaderPhoenix.Feeds do
         }
       end)
 
-    attrs = Map.put(attrs, "entries", entries)
+    attrs = Map.put(%{}, "entries", entries)
     attrs = Map.put(attrs, "title", parsedFeed.title)
+    attrs = Map.put(attrs, "url", url)
 
     %Feed{}
     |> Feed.changeset(attrs)
@@ -80,7 +88,9 @@ defmodule RssReaderPhoenix.Feeds do
         result
 
       {:error, _} ->
-        naive = Timex.parse!(String.slice(input, 0..-5), "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}")
+        naive =
+          Timex.parse!(String.slice(input, 0..-5), "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}")
+
         DateTime.from_naive!(naive, "Etc/UTC")
     end
   end
